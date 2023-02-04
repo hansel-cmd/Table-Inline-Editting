@@ -1,5 +1,5 @@
-import SampleTable from './SampleTable';
-import { Tabs } from 'antd';
+import SampleTable from './components/SampleTable'
+import { Tabs } from 'antd'
 
 function App() {
 
@@ -87,7 +87,7 @@ function App() {
         sortDirections: ['ascend', 'descend', 'ascend'],
         sorter: (a, b) => a.notifiedEmail.localeCompare(b.notifiedEmail),
     }
-  ];
+  ]
 
 
 
@@ -139,7 +139,7 @@ function App() {
     <div className="App">
       <Tabs defaultActiveKey='1' items={tabs} onChange={handleTabChange}></Tabs>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

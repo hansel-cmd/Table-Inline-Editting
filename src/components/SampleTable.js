@@ -1,22 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState, useEffect, useContext, createContext, useRef } from "react";
-import { Form, Input, Table, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-import { dummyData } from "./assets/dummy";
+import { useState, useEffect, useContext, createContext, useRef } from "react"
+import { Form, Input, Table, Button, Space } from 'antd'
+import Highlighter from 'react-highlight-words'
+import { SearchOutlined } from '@ant-design/icons'
+import { dummyData } from "../assets/dummy"
 
-const EditableContext = createContext(null);
+const EditableContext = createContext(null)
 
 const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
     return (
         <Form form={form} component={false}>
             <EditableContext.Provider value={form}>
                 <tr {...props} />
             </EditableContext.Provider>
         </Form>
-    );
-};
+    )
+}
 
 const EditableCell = ({
     title,
@@ -27,33 +27,33 @@ const EditableCell = ({
     handleSave,
     ...restProps
 }) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef(null);
-    const form = useContext(EditableContext);
+    const [editing, setEditing] = useState(false)
+    const inputRef = useRef(null)
+    const form = useContext(EditableContext)
     useEffect(() => {
         if (editing) {
-            inputRef.current.focus();
+            inputRef.current.focus()
         }
-    }, [editing]);
+    }, [editing])
     const toggleEdit = () => {
-        setEditing(!editing);
+        setEditing(!editing)
         form.setFieldsValue({
             [dataIndex]: record[dataIndex],
-        });
-    };
+        })
+    }
     const save = async () => {
         try {
-            const values = await form.validateFields();
-            toggleEdit();
+            const values = await form.validateFields()
+            toggleEdit()
             handleSave({
                 ...record,
                 ...values,
-            });
+            })
         } catch (errInfo) {
-            console.log('Save failed:', errInfo);
+            console.log('Save failed:', errInfo)
         }
-    };
-    let childNode = children;
+    }
+    let childNode = children
     if (editable) {
         childNode = editing ? (
             <Form.Item
@@ -80,40 +80,40 @@ const EditableCell = ({
             >
                 {children}
             </div>
-        );
+        )
     }
-    return <td {...restProps}>{childNode}</td>;
-};
+    return <td {...restProps}>{childNode}</td>
+}
 
 
 const SampleTable = ({ defaultColumns }) => {
 
-    const [dataSource, setDataSource] = useState([...dummyData]);
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef(null);
+    const [dataSource, setDataSource] = useState([...dummyData])
+    const [searchText, setSearchText] = useState('')
+    const [searchedColumn, setSearchedColumn] = useState('')
+    const searchInput = useRef(null)
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText((selectedKeys.length === 0 && '') || selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
+        confirm()
+        setSearchText((selectedKeys.length === 0 && '') || selectedKeys[0])
+        setSearchedColumn(dataIndex)
+    }
 
     const handleReset = (clearFilters, confirm, dataIndex) => {
-        clearFilters();
+        clearFilters()
         handleSearch([], confirm, dataIndex)
-    };
+    }
 
     const handleSave = (row) => {
-        console.log(row);
-        const newData = [...dataSource];
-        const index = newData.findIndex((item) => row.key === item.key);
-        const item = newData[index];
+        console.log(row)
+        const newData = [...dataSource]
+        const index = newData.findIndex((item) => row.key === item.key)
+        const item = newData[index]
         newData.splice(index, 1, {
             ...item,
             ...row,
-        });
-        setDataSource(newData);
-    };
+        })
+        setDataSource(newData)
+    }
 
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -169,7 +169,7 @@ const SampleTable = ({ defaultColumns }) => {
             record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
         onFilterDropdownOpenChange: (visible) => {
             if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
+                setTimeout(() => searchInput.current?.select(), 100)
             }
         },
         render: (text) =>
@@ -186,18 +186,18 @@ const SampleTable = ({ defaultColumns }) => {
             ) : (
                 text
             ),
-    });
+    })
 
     const components = {
         body: {
             row: EditableRow,
             cell: EditableCell,
         },
-    };
+    }
 
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
-            return col;
+            return col
         }
         // If the column is editable, i.e., editable attribute is true,
         // add an onCell attribute that sets new props to the cells
@@ -212,8 +212,8 @@ const SampleTable = ({ defaultColumns }) => {
                 title: col.title,
                 handleSave,
             }),
-        };
-    });
+        }
+    })
 
 
     return (
@@ -227,7 +227,7 @@ const SampleTable = ({ defaultColumns }) => {
                 pagination={{pageSize: 5}}
             />
         </div>
-    );
+    )
 }
 
-export default SampleTable;
+export default SampleTable
