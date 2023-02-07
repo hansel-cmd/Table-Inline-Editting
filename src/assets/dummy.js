@@ -12,7 +12,7 @@ export const dummyData = [
         startDate: new Date('2021-01-24').toDateString(),
         endDate: new Date('2021-01-30').toDateString(),
         totalQuantity: 12,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'test@gmail.com',
     },
     {
@@ -27,7 +27,7 @@ export const dummyData = [
         startDate: new Date('2021-08-24').toDateString(),
         endDate: new Date('2021-08-30').toDateString(),
         totalQuantity: 10,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'luke@gmail.com',
     },
     {
@@ -42,7 +42,7 @@ export const dummyData = [
         startDate: new Date('2028-04-24').toDateString(),
         endDate: new Date('2028-04-30').toDateString(),
         totalQuantity: 15,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'shionne@gmail.com',
     },
     {
@@ -57,7 +57,7 @@ export const dummyData = [
         startDate: new Date('2019-04-24').toDateString(),
         endDate: new Date('2019-04-30').toDateString(),
         totalQuantity: 1,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'world@gmail.com',
     },
     {
@@ -72,7 +72,7 @@ export const dummyData = [
         startDate: new Date('2022-11-24').toDateString(),
         endDate: new Date('2022-11-30').toDateString(),
         totalQuantity: 14,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'jude@gmail.com',
     },
     {
@@ -87,7 +87,7 @@ export const dummyData = [
         startDate: new Date('2021-01-24').toDateString(),
         endDate: new Date('2021-01-30').toDateString(),
         totalQuantity: 12,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'celica@gmail.com',
     },
     {
@@ -102,7 +102,7 @@ export const dummyData = [
         startDate: new Date('2021-08-24').toDateString(),
         endDate: new Date('2021-08-30').toDateString(),
         totalQuantity: 10,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'edna@gmail.com',
     },
     {
@@ -117,7 +117,7 @@ export const dummyData = [
         startDate: new Date('2028-04-24').toDateString(),
         endDate: new Date('2028-04-30').toDateString(),
         totalQuantity: 15,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'teresa@gmail.com',
     },
     {
@@ -132,7 +132,7 @@ export const dummyData = [
         startDate: new Date('2019-04-24').toDateString(),
         endDate: new Date('2019-04-30').toDateString(),
         totalQuantity: 1,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'laphicet@gmail.com',
     },
     {
@@ -147,7 +147,7 @@ export const dummyData = [
         startDate: new Date('2022-11-24').toDateString(),
         endDate: new Date('2022-11-30').toDateString(),
         totalQuantity: 14,
-        certificate: 'Link',
+        certificate: <a href="https://www.google.com" target="_blank" rel="noreferrer">Link</a>,
         notifiedEmail: 'maxwell@gmail.com',
     },
     

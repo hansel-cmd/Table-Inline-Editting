@@ -1,5 +1,6 @@
 import SampleTable from './components/SampleTable'
 import { Tabs } from 'antd'
+import AnotherTable from './components/AnotherTable'
 
 function App() {
 
@@ -86,11 +87,15 @@ function App() {
         editable: true,
         sortDirections: ['ascend', 'descend', 'ascend'],
         sorter: (a, b) => a.notifiedEmail.localeCompare(b.notifiedEmail),
-    }
+    },
+    {
+      title: 'Table Operation',
+      dataIndex: 'operation',
+      editable: false,
+    },
   ]
 
-
-
+  // Tab used for the FIRST table
   const tabs = [
     {
       key: 1,
@@ -100,44 +105,92 @@ function App() {
     {
       key: 2,
       label: 'Residential REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 10)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 10), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 3,
       label: 'Residential Cert Failed to Issue',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 6)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 6), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 4,
       label: '(C&I) CC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 4)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 4), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 5,
       label: '(C&I) REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 9)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 9), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 6,
       label: '(C&I) SG REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 11)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 11), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 7,
       label: '(C&I) Cert Failed to Issue',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 5)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 5), defaultColumns[12]]}></SampleTable>,
     },
     {
       key: 8,
       label: 'Ad-hoc Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 7)]}></SampleTable>,
+      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 7), defaultColumns[12]]}></SampleTable>,
+    }
+  ]
+
+  // Tab used for the SECOND table
+  const anotherTab = [
+    {
+      key: 1,
+      label: 'Residential CC Cert Issued',
+      children: <AnotherTable defaultColumns={defaultColumns}></AnotherTable>,
+    },
+    {
+      key: 2,
+      label: 'Residential REC Cert Issued',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 10), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 3,
+      label: 'Residential Cert Failed to Issue',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 6), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 4,
+      label: '(C&I) CC Cert Issued',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 4), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 5,
+      label: '(C&I) REC Cert Issued',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 9), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 6,
+      label: '(C&I) SG REC Cert Issued',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 11), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 7,
+      label: '(C&I) Cert Failed to Issue',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 5), defaultColumns[12]]}></AnotherTable>,
+    },
+    {
+      key: 8,
+      label: 'Ad-hoc Cert Issued',
+      children: <AnotherTable defaultColumns={[...defaultColumns.slice(0, 7), defaultColumns[12]]}></AnotherTable>,
     }
   ]
 
 
   return (
     <div className="App">
+      <h4>Individual cell edit</h4>
       <Tabs defaultActiveKey='1' items={tabs} onChange={handleTabChange}></Tabs>
+
+      <h4>Row edit</h4>
+      <Tabs defaultActiveKey='1' items={anotherTab} onChange={handleTabChange}></Tabs>
     </div>
   )
 }
