@@ -1,5 +1,5 @@
-import SampleTable from './components/SampleTable'
 import { Tabs } from 'antd'
+import { Input, Col, Row } from 'antd'
 import AnotherTable from './components/AnotherTable'
 
 function App() {
@@ -10,83 +10,83 @@ function App() {
 
   const defaultColumns = [
     {
-        title: 'Certificate Number',
-        dataIndex: 'certificateNumber',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.certificateNumber.localeCompare(b.certificateNumber),
+      title: 'Certificate Number',
+      dataIndex: 'certificateNumber',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.certificateNumber.localeCompare(b.certificateNumber),
     },
     {
-        title: 'Customer Name',
-        dataIndex: 'customerName',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      title: 'Customer Name',
+      dataIndex: 'customerName',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
     },
     {
-        title: 'MSSL',
-        dataIndex: 'mssl',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.mssl.localeCompare(b.mssl),
+      title: 'MSSL',
+      dataIndex: 'mssl',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.mssl.localeCompare(b.mssl),
     },
     {
-        title: 'Geneco Account Number',
-        dataIndex: 'genecoAccountNumber',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.genecoAccountNumber.localeCompare(b.genecoAccountNumber),
+      title: 'Geneco Account Number',
+      dataIndex: 'genecoAccountNumber',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.genecoAccountNumber.localeCompare(b.genecoAccountNumber),
     },
     {
-        title: 'Contact Number',
-        dataIndex: 'contactNumber',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.contactNumber.localeCompare(b.contactNumber),
+      title: 'Contact Number',
+      dataIndex: 'contactNumber',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.contactNumber.localeCompare(b.contactNumber),
     },
     {
-        title: 'Product Number',
-        dataIndex: 'productNumber',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.productNumber.localeCompare(b.productNumber),
+      title: 'Product Number',
+      dataIndex: 'productNumber',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.productNumber.localeCompare(b.productNumber),
     },
     {
-        title: 'Certificate Issuance Date',
-        dataIndex: 'certificateIssuanceDate',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => new Date(a.certificateIssuanceDate) - new Date(b.certificateIssuanceDate),
+      title: 'Certificate Issuance Date',
+      dataIndex: 'certificateIssuanceDate',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => new Date(a.certificateIssuanceDate) - new Date(b.certificateIssuanceDate),
     },
     {
-        title: 'Start Date',
-        dataIndex: 'startDate',
-        editable: true,
-        sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
-    },
-    {   
-        title: 'End Date',
-        dataIndex: 'endDate',
-        editable: true,
-        sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
+      title: 'Start Date',
+      dataIndex: 'startDate',
+      editable: true,
+      sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
     },
     {
-        title: 'Total Quantity',
-        dataIndex: 'totalQuantity',
-        editable: true,
-        sorter: (a, b) => a.totalQuantity - b.totalQuantity,
+      title: 'End Date',
+      dataIndex: 'endDate',
+      editable: true,
+      sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
     },
     {
-        title: 'Certificate',
-        dataIndex: 'certificate',
-        editable: true,
+      title: 'Total Quantity',
+      dataIndex: 'totalQuantity',
+      editable: true,
+      sorter: (a, b) => a.totalQuantity - b.totalQuantity,
     },
     {
-        title: 'Notification Email Sent To',
-        dataIndex: 'notifiedEmail',
-        editable: true,
-        sortDirections: ['ascend', 'descend', 'ascend'],
-        sorter: (a, b) => a.notifiedEmail.localeCompare(b.notifiedEmail),
+      title: 'Certificate',
+      dataIndex: 'certificate',
+      editable: true,
+    },
+    {
+      title: 'Notification Email Sent To',
+      dataIndex: 'notifiedEmail',
+      editable: true,
+      sortDirections: ['ascend', 'descend', 'ascend'],
+      sorter: (a, b) => a.notifiedEmail.localeCompare(b.notifiedEmail),
     },
     {
       title: 'Table Operation',
@@ -94,51 +94,6 @@ function App() {
       editable: false,
     },
   ]
-
-  // Tab used for the FIRST table
-  const tabs = [
-    {
-      key: 1,
-      label: 'Residential CC Cert Issued',
-      children: <SampleTable defaultColumns={defaultColumns}></SampleTable>,
-    },
-    {
-      key: 2,
-      label: 'Residential REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 10), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 3,
-      label: 'Residential Cert Failed to Issue',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 6), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 4,
-      label: '(C&I) CC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 4), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 5,
-      label: '(C&I) REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 9), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 6,
-      label: '(C&I) SG REC Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 11), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 7,
-      label: '(C&I) Cert Failed to Issue',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 5), defaultColumns[12]]}></SampleTable>,
-    },
-    {
-      key: 8,
-      label: 'Ad-hoc Cert Issued',
-      children: <SampleTable defaultColumns={[...defaultColumns.slice(0, 7), defaultColumns[12]]}></SampleTable>,
-    }
-  ]
-
   // Tab used for the SECOND table
   const anotherTab = [
     {
@@ -186,10 +141,17 @@ function App() {
 
   return (
     <div className="App">
-      <h4>Individual cell edit</h4>
-      <Tabs defaultActiveKey='1' items={tabs} onChange={handleTabChange}></Tabs>
-
       <h4>Row edit</h4>
+
+      <Row>
+        <Col className='d-flex align-items-center justify-content-center me-2'>
+          <h6 className='my-0'>Retirement Quantity</h6>
+        </Col>
+        <Col>
+          <Input onInput={(e) => console.log(e.target.value)} />
+        </Col>
+      </Row>
+
       <Tabs defaultActiveKey='1' items={anotherTab} onChange={handleTabChange}></Tabs>
     </div>
   )
