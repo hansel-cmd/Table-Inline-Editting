@@ -1,10 +1,18 @@
+import { useState } from 'react'
 import { Tabs } from 'antd'
-import { Input, Col, Row } from 'antd'
+import { Input } from 'antd'
 import AnotherTable from './components/AnotherTable'
+import CustomModal from './components/Modal'
 
 function App() {
 
+  const [currentTabTitle, setCurrentTabTitle] = useState('Residential CC Cert Issued')
   const handleTabChange = (key) => {
+    const currentTab = anotherTab.find(t => t.key === key)
+    if (!currentTab) return
+    const tabLabel = currentTab.label
+    setCurrentTabTitle(tabLabel)
+
     console.log(key)
   }
 
@@ -94,6 +102,7 @@ function App() {
       editable: false,
     },
   ]
+
   // Tab used for the SECOND table
   const anotherTab = [
     {
@@ -143,14 +152,16 @@ function App() {
     <div className="App">
       <h4>Row edit</h4>
 
-      <Row>
-        <Col className='d-flex align-items-center justify-content-center me-2'>
-          <h6 className='my-0'>Retirement Quantity</h6>
-        </Col>
-        <Col>
-          <Input onInput={(e) => console.log(e.target.value)} />
-        </Col>
-      </Row>
+      
+      <div className='row'>
+        <div className="col-6 d-flex align-items-center justify-content-start">
+          <h6 className='my-0 me-4'>Retirement Quantity</h6>
+          <Input className='w-25' onInput={(e) => console.log(e.target.value)} />
+        </div>
+        <div className="col d-flex justify-content-end">
+          <CustomModal currentTabTitle={currentTabTitle}></CustomModal>
+        </div>
+      </div>
 
       <Tabs defaultActiveKey='1' items={anotherTab} onChange={handleTabChange}></Tabs>
     </div>
