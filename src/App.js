@@ -87,7 +87,6 @@ function App() {
     },
     pageStyle:"@page { size: 297mm 210mm }",
     documentTitle: currentTabTitle,
-    onAfterPrint: () => window.close()
   })
 
   // This is only appropriate for the dummy data
