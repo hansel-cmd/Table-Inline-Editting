@@ -85,7 +85,7 @@ function App() {
       // we just need to get its <div> reference
       return document.querySelector('#table-content')
     },
-    pageStyle:"@page { size: 297mm 210mm }",
+    pageStyle:"@page { size: landscape }",
     documentTitle: currentTabTitle,
   })
 
