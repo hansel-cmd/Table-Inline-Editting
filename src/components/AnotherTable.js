@@ -4,15 +4,6 @@ import { useState, useRef } from 'react';
 import Highlighter from 'react-highlight-words'
 
 
-const originData = [];
-for (let i = 0; i < 100; i++) {
-    originData.push({
-        key: i.toString(),
-        name: `Edrward ${i}`,
-        age: 32,
-        address: `London Park no. ${i}`,
-    });
-}
 const EditableCell = ({
     editing,
     dataIndex,
@@ -48,7 +39,7 @@ const EditableCell = ({
     );
 };
 
-const AnotherTable = ({ defaultColumns, setCurrentTableData, dummyData }) => {
+const AnotherTable = ({ defaultColumns, dummyData }) => {
 
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([...dummyData]);
@@ -58,7 +49,7 @@ const AnotherTable = ({ defaultColumns, setCurrentTableData, dummyData }) => {
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.key === editingKey;
 
-   
+
     const handleEdit = (record) => {
         // use setFieldsValue to be able to validate fields when saving
         // use the href attribute for the certificate field because it
@@ -238,7 +229,7 @@ const AnotherTable = ({ defaultColumns, setCurrentTableData, dummyData }) => {
                         <Typography.Link disabled={editingKey !== ''} onClick={() => handleEdit(record)} style={{ 'marginRight': '8px' }}>
                             Edit
                         </Typography.Link>
-                        <Popconfirm title={<div style={{'width': '200px'}}>Do you want to remove this record?</div>} onConfirm={() => handleDelete(record.key)}>
+                        <Popconfirm title={<div style={{ 'width': '200px' }}>Do you want to remove this record?</div>} onConfirm={() => handleDelete(record.key)}>
                             <Typography.Link>
                                 Delete
                             </Typography.Link>
@@ -273,38 +264,58 @@ const AnotherTable = ({ defaultColumns, setCurrentTableData, dummyData }) => {
         },
     }
 
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const onSelectChange = (newSelectedRowKeys, record) => {
+        console.log('Current record: ', record)
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys)
+        setSelectedRowKeys(newSelectedRowKeys)
+    };
+
+    const rowSelection = {
+        selectedRowKeys,
+        type: 'radio',
+        onSelect: () => console.log('haha'),
+        onChange: onSelectChange,
+    };
+
     return (
-        <div>
-            <div style={{ 'overflowX': 'auto' }}>
-                <Form form={form} component={false}>
-                    <Table
-                        summary={(data) => {
-                            // parse the certificate object
-                            // get only the href string
-                            const x = data.map(d => ({
-                                ...d,
-                                certificate: d.certificate?.props?.href
-                            }))
-                            // Need to have a delay, otherwise, react will
-                            // throw an error regarding simultaneous component
-                            // render
-                            setTimeout(() => {
-                                setCurrentTableData(x)
-                            }, 1)
-                            return undefined
-                        }}
-                        components={components}
-                        bordered
-                        dataSource={dataSource}
-                        columns={mergedColumns}
-                        rowClassName="editable-row"
-                        pagination={{
-                            pageSize: 5,
-                            onChange: handleCancel,
-                        }}
-                    />
-                </Form>
-            </div>
+        <div style={{ 'overflowX': 'auto' }}>
+            <Form form={form} component={false}>
+                <Table
+                    summary={(data) => {
+                        // parse the certificate object
+                        // get only the href string
+                        const x = data.map(d => ({
+                            ...d,
+                            certificate: d.certificate?.props?.href
+                        }))
+
+                        // Summary needs to return a React.ReactNode
+                        // We need this so that we can get a reference
+                        // to the current data of the table when we
+                        // export to excel or pdf 
+                        return (
+                            <>
+                                <Table.Summary.Row>
+                                    <Table.Summary.Cell className='test-data d-none'>
+                                        {JSON.stringify(x)}
+                                    </Table.Summary.Cell>
+                                </Table.Summary.Row>
+                            </>
+                        )
+                    }}
+                    components={components}
+                    bordered
+                    dataSource={dataSource}
+                    columns={mergedColumns}
+                    rowSelection={rowSelection}
+                    rowClassName="editable-row"
+                    pagination={{
+                        pageSize: 5,
+                        onChange: handleCancel,
+                    }}
+                />
+            </Form>
         </div>
     );
 };

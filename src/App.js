@@ -5,27 +5,64 @@ import CustomModal from './components/Modal'
 import { dummyData } from "./assets/dummy"
 import FileSaver from 'file-saver'
 import XLSX from 'sheetjs-style'
+import jsPDF from 'jspdf'
 
 function App() {
 
-  // default table data: first 5 elements
-  const [currentTableData, setCurrentTableData] = useState([])
+  // Currently, there is only 1 dummy data (and 1 default column). 
+  // Meaning, regardless of which Tab is opened, whatever is 
+  // displayed in the table will be exported INCLUDING all the Object 
+  // keys found in the dummy data.
   const handleExportExcel = async (fileName) => {
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
     const fileExtension = '.xlsx'
     console.log('handling export excel...')
 
+    const innerHTML = document.querySelector('.test-data').innerHTML
+    const currentTableData = JSON.parse(innerHTML)
+
     const ws = XLSX.utils.json_to_sheet(currentTableData)
-    const wb = { Sheets: {'data': ws }, SheetNames: ['data'] }
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array'})
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] }
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
     const data = new Blob([excelBuffer], { type: fileType })
     FileSaver.saveAs(data, fileName + fileExtension)
   }
 
-  const handleExportPdf = () => {
+  // Currently, there is only 1 dummy data (and 1 default column). 
+  // Meaning, regardless of which Tab is opened, whatever is 
+  // displayed in the table will be exported INCLUDING all the Object 
+  // keys found in the dummy data.
+  const handleExportPdf = (fileName) => {
+    const innerHTML = document.querySelector('.test-data').innerHTML
+    const currentTableData = JSON.parse(innerHTML)
+
+    require('jspdf-autotable')
     console.log('handing export pdf...')
+    const report = new jsPDF('landscape', 'pt', 'a4');
+
+    // get all the header columns of the table
+    // do not include the "Tabe Operation" column
+    const cols = defaultColumns.map(c => ({ title: c.title }))
+    cols.pop()
+
+    // Flatten each object's values
+    // do not include the first element, "key"
+    const temp = currentTableData.map(d => {
+      const x = Object.values(d)
+      x.shift()
+      return x
+    })
+
+    const xOffset = report.internal.pageSize.width / 2
+    report.text(currentTabTitle, xOffset, 8, { align: 'center' });
+    report.autoTable({
+      head: [cols],
+      body: temp
+    })
+    report.save(fileName + '.pdf')
   }
 
+ 
   const [currentTabTitle, setCurrentTabTitle] = useState('Residential CC Cert Issued')
   const handleTabChange = (key) => {
     const currentTab = anotherTab.find(t => t.key === key)
@@ -36,6 +73,9 @@ function App() {
     console.log(key)
   }
 
+  // This is only appropriate for the dummy data
+  // defaultColumns variable must be changed 
+  // depending on the provided data
   const defaultColumns = [
     {
       title: 'Certificate Number',
@@ -128,42 +168,42 @@ function App() {
     {
       key: 1,
       label: 'Residential CC Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={defaultColumns} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={defaultColumns}></AnotherTable>,
     },
     {
       key: 2,
       label: 'Residential REC Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 10), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 10), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 3,
       label: 'Residential Cert Failed to Issue',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 6), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 6), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 4,
       label: '(C&I) CC Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 4), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 4), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 5,
       label: '(C&I) REC Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 9), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 9), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 6,
       label: '(C&I) SG REC Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 11), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 11), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 7,
       label: '(C&I) Cert Failed to Issue',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 5), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 5), defaultColumns[12]]}></AnotherTable>,
     },
     {
       key: 8,
       label: 'Ad-hoc Cert Issued',
-      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 7), defaultColumns[12]]} setCurrentTableData={setCurrentTableData}></AnotherTable>,
+      children: <AnotherTable dummyData={dummyData} defaultColumns={[...defaultColumns.slice(0, 7), defaultColumns[12]]}></AnotherTable>,
     }
   ]
 
@@ -179,10 +219,10 @@ function App() {
         </div>
         <div className="col d-flex justify-content-end">
           <CustomModal currentTabTitle={currentTabTitle}></CustomModal>
-          <Button key="back" onClick={() => handleExportExcel('excelData')}>
+          <Button className='ms-2 me-1' onClick={() => handleExportExcel('excelData')}>
             Export Excel
           </Button>
-          <Button key="back" onClick={() => handleExportExcel('excelData')}>
+          <Button className='ms-1 me-2' onClick={() => handleExportPdf('pdfData')}>
             Export PDF
           </Button>
         </div>
