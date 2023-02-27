@@ -38,19 +38,19 @@ const CustomModal = ({ currentTabTitle }) => {
             >
                 <div className='py-4'>
                     <div className="mb-3 row">
-                        <label for="field1" className="col-sm-2 col-form-label">Field1</label>
+                        <label htmlFor="field1" className="col-sm-2 col-form-label">Field1</label>
                         <div className="col-sm-10">
                             <Input id="field1" onInput={(e) => console.log(e.target.value)} />
                         </div>
                     </div>
                     <div className="mb-3 row">
-                        <label for="field2" className="col-sm-2 col-form-label">Field2</label>
+                        <label htmlFor="field2" className="col-sm-2 col-form-label">Field2</label>
                         <div className="col-sm-10">
                             <Input id="field2" onInput={(e) => console.log(e.target.value)} />
                         </div>
                     </div>
                     <div className="mb-3 row">
-                        <label for="field3" className="col-sm-2 col-form-label">Field3</label>
+                        <label htmlFor="field3" className="col-sm-2 col-form-label">Field3</label>
                         <div className="col-sm-10">
                                 <Select className='w-100'>
                                     <Select.Option value="option1">Option 1</Select.Option>
@@ -61,13 +61,13 @@ const CustomModal = ({ currentTabTitle }) => {
                         </div>
                     </div>
                     <div className="mb-3 row">
-                        <label for="field4" className="col-sm-2 col-form-label">Field4</label>
+                        <label htmlFor="field4" className="col-sm-2 col-form-label">Field4</label>
                         <div className="col-sm-10">
                             <DatePicker id="field4" className='w-100'/>
                         </div>
                     </div>
                     <div className="mb-3 row">
-                        <label for="field5" className="col-sm-2 col-form-label">Field5</label>
+                        <label htmlFor="field5" className="col-sm-2 col-form-label">Field5</label>
                         <div className="col-sm-10">
                             <InputNumber id="field5" className='w-100'/>
                         </div>

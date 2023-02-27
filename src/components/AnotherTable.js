@@ -2,7 +2,7 @@ import { Form, InputNumber, Popconfirm, Table, Typography, Input, Space, Button 
 import { SearchOutlined } from '@ant-design/icons'
 import { useState, useRef } from 'react';
 import Highlighter from 'react-highlight-words'
-import { dummyData } from "../assets/dummy"
+
 
 const originData = [];
 for (let i = 0; i < 100; i++) {
@@ -48,7 +48,7 @@ const EditableCell = ({
     );
 };
 
-const AnotherTable = ({ defaultColumns }) => {
+const AnotherTable = ({ defaultColumns, setCurrentTableData, dummyData }) => {
 
     const [form] = Form.useForm();
     const [dataSource, setDataSource] = useState([...dummyData]);
@@ -58,11 +58,12 @@ const AnotherTable = ({ defaultColumns }) => {
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.key === editingKey;
 
+   
     const handleEdit = (record) => {
         // use setFieldsValue to be able to validate fields when saving
         // use the href attribute for the certificate field because it
         // is an href object
-        console.log(record) 
+        console.log(record)
         form.setFieldsValue({
             ...record,
             certificate: record['certificate'].props?.href
@@ -81,7 +82,7 @@ const AnotherTable = ({ defaultColumns }) => {
             // If the edited cell in the row is a link, then transform
             // the data to be saved
             if (row['certificate']) {
-                row['certificate'] =  <a href={row['certificate']} target="_blank" rel="noreferrer">Link</a>
+                row['certificate'] = <a href={row['certificate']} target="_blank" rel="noreferrer">Link</a>
             }
             const newData = [...dataSource];
             const index = newData.findIndex((item) => key === item.key);
@@ -192,13 +193,12 @@ const AnotherTable = ({ defaultColumns }) => {
             ),
     })
 
-    
     const columns = defaultColumns.map((col) => {
         // Column certificate doesnt need to have search filter
         if (col.dataIndex === 'certificate') {
             return col
         }
-        
+
         // Add a search filter functionality
         const newCol = {
             ...col,
@@ -208,7 +208,7 @@ const AnotherTable = ({ defaultColumns }) => {
         if (col.dataIndex !== 'operation') {
             return newCol
         }
-        
+
         // Add edit and delete functionality under the column "operation"
         return {
             ...col,
@@ -235,10 +235,10 @@ const AnotherTable = ({ defaultColumns }) => {
                     </span>
                 ) : (
                     <span>
-                        <Typography.Link disabled={editingKey !== ''} onClick={() => handleEdit(record)} style={{'marginRight': '8px'}}>
+                        <Typography.Link disabled={editingKey !== ''} onClick={() => handleEdit(record)} style={{ 'marginRight': '8px' }}>
                             Edit
                         </Typography.Link>
-                        <Popconfirm title="Do you want to remove this record?" onConfirm={() => handleDelete(record.key)}>
+                        <Popconfirm title={<div style={{'width': '200px'}}>Do you want to remove this record?</div>} onConfirm={() => handleDelete(record.key)}>
                             <Typography.Link>
                                 Delete
                             </Typography.Link>
@@ -249,7 +249,7 @@ const AnotherTable = ({ defaultColumns }) => {
             },
         }
     })
-    
+
     // Make the cell of each row editable
     const mergedColumns = columns.map((col) => {
         if (!col.editable) {
@@ -274,20 +274,37 @@ const AnotherTable = ({ defaultColumns }) => {
     }
 
     return (
-        <div style={{ 'overflowX': 'auto' }}>
-            <Form form={form} component={false}>
-            <Table
-                components={components}
-                bordered
-                dataSource={dataSource}
-                columns={mergedColumns}
-                rowClassName="editable-row"
-                pagination={{
-                    pageSize: 5,
-                    onChange: handleCancel,
-                }}
-            />
-        </Form>
+        <div>
+            <div style={{ 'overflowX': 'auto' }}>
+                <Form form={form} component={false}>
+                    <Table
+                        summary={(data) => {
+                            // parse the certificate object
+                            // get only the href string
+                            const x = data.map(d => ({
+                                ...d,
+                                certificate: d.certificate?.props?.href
+                            }))
+                            // Need to have a delay, otherwise, react will
+                            // throw an error regarding simultaneous component
+                            // render
+                            setTimeout(() => {
+                                setCurrentTableData(x)
+                            }, 1)
+                            return undefined
+                        }}
+                        components={components}
+                        bordered
+                        dataSource={dataSource}
+                        columns={mergedColumns}
+                        rowClassName="editable-row"
+                        pagination={{
+                            pageSize: 5,
+                            onChange: handleCancel,
+                        }}
+                    />
+                </Form>
+            </div>
         </div>
     );
 };
