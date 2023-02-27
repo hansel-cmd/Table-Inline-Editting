@@ -279,44 +279,47 @@ const AnotherTable = ({ defaultColumns, dummyData }) => {
     };
 
     return (
-        <div style={{ 'overflowX': 'auto' }}>
-            <Form form={form} component={false}>
-                <Table
-                    summary={(data) => {
-                        // parse the certificate object
-                        // get only the href string
-                        const x = data.map(d => ({
-                            ...d,
-                            certificate: d.certificate?.props?.href
-                        }))
+        <div style={{overflowX: 'auto'}}>
+            <div id="table-content">
+                <Form form={form} component={false}>
+                    <Table
+                        summary={(data) => {
+                            // parse the certificate object
+                            // get only the href string
+                            const x = data.map(d => ({
+                                ...d,
+                                certificate: d.certificate?.props?.href
+                            }))
 
-                        // Summary needs to return a React.ReactNode
-                        // We need this so that we can get a reference
-                        // to the current data of the table when we
-                        // export to excel or pdf 
-                        return (
-                            <>
-                                <Table.Summary.Row>
-                                    <Table.Summary.Cell className='test-data d-none'>
-                                        {JSON.stringify(x)}
-                                    </Table.Summary.Cell>
-                                </Table.Summary.Row>
-                            </>
-                        )
-                    }}
-                    components={components}
-                    bordered
-                    dataSource={dataSource}
-                    columns={mergedColumns}
-                    rowSelection={rowSelection}
-                    rowClassName="editable-row"
-                    pagination={{
-                        pageSize: 5,
-                        onChange: handleCancel,
-                    }}
-                />
-            </Form>
+                            // Summary needs to return a React.ReactNode
+                            // We need this so that we can get a reference
+                            // to the current data of the table when we
+                            // export to excel or pdf 
+                            return (
+                                <>
+                                    <Table.Summary.Row>
+                                        <Table.Summary.Cell className='test-data d-none'>
+                                            {JSON.stringify(x)}
+                                        </Table.Summary.Cell>
+                                    </Table.Summary.Row>
+                                </>
+                            )
+                        }}
+                        components={components}
+                        bordered
+                        dataSource={dataSource}
+                        columns={mergedColumns}
+                        rowSelection={rowSelection}
+                        rowClassName="editable-row"
+                        pagination={{
+                            pageSize: 5,
+                            onChange: handleCancel,
+                        }}
+                    />
+                </Form>
+            </div>
         </div>
+
     );
 };
 

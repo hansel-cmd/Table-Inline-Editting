@@ -6,8 +6,19 @@ import { dummyData } from "./assets/dummy"
 import FileSaver from 'file-saver'
 import XLSX from 'sheetjs-style'
 import jsPDF from 'jspdf'
+import { useReactToPrint } from "react-to-print"
 
 function App() {
+
+  const [currentTabTitle, setCurrentTabTitle] = useState('Residential CC Cert Issued')
+  const handleTabChange = (key) => {
+    const currentTab = anotherTab.find(t => t.key === key)
+    if (!currentTab) return
+    const tabLabel = currentTab.label
+    setCurrentTabTitle(tabLabel)
+
+    console.log(key)
+  }
 
   // Currently, there is only 1 dummy data (and 1 default column). 
   // Meaning, regardless of which Tab is opened, whatever is 
@@ -62,16 +73,22 @@ function App() {
     report.save(fileName + '.pdf')
   }
 
- 
-  const [currentTabTitle, setCurrentTabTitle] = useState('Residential CC Cert Issued')
-  const handleTabChange = (key) => {
-    const currentTab = anotherTab.find(t => t.key === key)
-    if (!currentTab) return
-    const tabLabel = currentTab.label
-    setCurrentTabTitle(tabLabel)
-
-    console.log(key)
+  const handlePrint = () => {
+    console.log('handle printing...')
+    print()
   }
+
+  const print = useReactToPrint({
+    content: () => {
+      // this gets the reference for the table.
+      // We can also create a custom table design,
+      // we just need to get its <div> reference
+      return document.querySelector('#table-content')
+    },
+    pageStyle:"@page { size: 297mm 210mm }",
+    documentTitle: currentTabTitle,
+    onAfterPrint: () => window.close()
+  })
 
   // This is only appropriate for the dummy data
   // defaultColumns variable must be changed 
@@ -212,7 +229,7 @@ function App() {
     <div className="App">
       <h4>Row edit</h4>
 
-      <div className='row'>
+      <div className='row mx-0'>
         <div className="col d-flex align-items-center justify-content-start">
           <h6 className='my-0 me-4'>Retirement Quantity</h6>
           <Input className='w-25' onInput={(e) => console.log(e.target.value)} />
@@ -224,6 +241,9 @@ function App() {
           </Button>
           <Button className='ms-1 me-2' onClick={() => handleExportPdf('pdfData')}>
             Export PDF
+          </Button>
+          <Button className='ms-1' onClick={() => handlePrint()}>
+            Print
           </Button>
         </div>
       </div>
