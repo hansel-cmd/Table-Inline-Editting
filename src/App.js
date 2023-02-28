@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Tabs, Input, Button } from 'antd'
 import AnotherTable from './components/AnotherTable'
+import PrintableTable from './components/PrintableTable'
 import CustomModal from './components/Modal'
 import { dummyData } from "./assets/dummy"
 import FileSaver from 'file-saver'
@@ -22,8 +23,8 @@ function App() {
 
   // Currently, there is only 1 dummy data (and 1 default column). 
   // Meaning, regardless of which Tab is opened, whatever is 
-  // displayed in the table will be exported INCLUDING all the Object 
-  // keys found in the dummy data.
+  // displayed in the current page of the table will be exported 
+  // INCLUDING all the Object keys found in the dummy data.
   const handleExportExcel = async (fileName) => {
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
     const fileExtension = '.xlsx'
@@ -41,8 +42,8 @@ function App() {
 
   // Currently, there is only 1 dummy data (and 1 default column). 
   // Meaning, regardless of which Tab is opened, whatever is 
-  // displayed in the table will be exported INCLUDING all the Object 
-  // keys found in the dummy data.
+  // displayed in the current page of the table will be exported 
+  // INCLUDING all the Object keys found in the dummy data.
   const handleExportPdf = (fileName) => {
     const innerHTML = document.querySelector('.test-data').innerHTML
     const currentTableData = JSON.parse(innerHTML)
@@ -73,17 +74,53 @@ function App() {
     report.save(fileName + '.pdf')
   }
 
+  // currentData is initially empty. Once the user clicks the print button,
+  // the currentData would be populated with whatever is in the current page
+  // of the table. The <PrintableTable /> component would then contain those
+  // information
+  const [currentData, setCurrentData] = useState([])
+  const isPrinting = useRef(false)
+  const isFirstRender = useRef(true)
   const handlePrint = () => {
     console.log('handle printing...')
-    print()
+    const innerHTML = document.querySelector('.test-data')?.innerHTML
+    if (!innerHTML) return
+    const currentTableData = JSON.parse(innerHTML)
+    setCurrentData(currentTableData)
+    isPrinting.current = true
   }
+
+  // Once the currentData gets populated (after pressing print button),
+  // we need to run print() to print the <PrintableTable />. But do not
+  // run this useEffect if it's the first render of the component, run
+  // only if the currentData gets populated (after setState).  We also 
+  // need the isPrinting ref because in development mode, useEffect 
+  // always run twice, which executes the print() method, thus, we need
+  // to print only if it's not the first render and we are printing.
+  useEffect(() => {
+    console.log(isFirstRender.current, 'hahaha')
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    if (!isFirstRender.current && isPrinting.current) {
+      print()
+      isPrinting.current = false
+    }
+  
+  // currentData needs to be a dependency for this useEffect because
+  // when we click the print button, we populate the currentData with
+  // value. So after populating, we have to execute this hook.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentData])
 
   const print = useReactToPrint({
     content: () => {
       // this gets the reference for the table.
       // We can also create a custom table design,
       // we just need to get its <div> reference
-      return document.querySelector('#table-content')
+      return document.querySelector('#table-content1')
     },
     pageStyle:"@page { size: landscape }",
     documentTitle: currentTabTitle,
@@ -248,6 +285,11 @@ function App() {
       </div>
 
       <Tabs defaultActiveKey='1' items={anotherTab} onChange={handleTabChange}></Tabs>
+      
+      {/* This is a layout for the table that gets printed. We do not need to show this in the page.
+          We also need to remove the last column of the defaultColumns as it is a Table Operation. 
+          We do not want that to be included in the printable layout */}
+      <PrintableTable defaultColumns={defaultColumns.slice(0, -1)} currentData={currentData} tableTitle={currentTabTitle}></PrintableTable>
     </div>
   )
 }
